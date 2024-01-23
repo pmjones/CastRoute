@@ -1,0 +1,6 @@
+/.php-styler.cache
+/.phpunit.result.cache
+/composer.lock
+/tmp
+/vendor
+/tests/castroute.cache.php
