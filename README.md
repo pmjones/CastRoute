@@ -48,7 +48,6 @@ CastRoute supports these variable types (matching these regexes) by default:
 - `bool`: `0|f|false|n|no|1|t|true|y|yes`
 - `float`: `\d+\.?\d+`
 - `int`: `\d+`
-- `mixed`: `[^/]+`
 - `string`: `[^/]+`
 
 Variables specified in this way will be recast at `dispatch()` time via an instance of _CastRouteVariables_:
@@ -118,18 +117,21 @@ assert($path === '/articles/88/the-article-slug');
 
 CastRoute maintains a data structure of all routes with their HTTP methods, paths, and handlers.
 
-To dump this data structure and see all the routes, get the _CastRouteHandler_ object from the _CastRoute_ container, and call its `getUrls()` method. You can then use that data structure to print out a dump of all routes. For example:
+To dump this data structure and see all the routes, get the _CastRouteHandler_ object from the _CastRoute_ container, and call its `getUrls()` method. You can then use that data structure to print out a dump of all routes. For example, this script ...
 
 ```php
 // define routes
 $castRoute = new CastRoute(
     routes: function ($r) {
-        $r->get('/user/{id:int}', 'GetUserAction');
+        // user
+        $r->addRoute('GET', '/user/{id:int}', 'GetUserAction');
         $r->patch('/user/{id:int}', 'EditUserAction');
-        $r->get(
-            '/archive/{username}[/{year:year}[/{month:month}[/{day:day}]]]',
-            'GetArchiveAction',
-        );
+        $r->post('/user', 'PostUserAction');
+
+        // article
+        $r->get('/article/{id:int}', 'GetArticleAction');
+        $r->post('/article', 'PostArticleAction');
+        $r->patch('/article/{id:int}', 'PatchArticleAction');
     },
 );
 
@@ -145,12 +147,19 @@ foreach ($urls as $path => $methodHandler) {
 }
 ```
 
-The output will look something like this:
+... will generate output that looks something like this:
 
 ```
-/archive/{username}[/{year:year}[/{month:month}[/{day:day}]]]
-    GET: GetArchiveAction
-    HEAD: GetArchiveAction
+/article
+    POST: PostArticleAction
+
+/article/{id:int}
+    GET: GetArticleAction
+    HEAD: GetArticleAction
+    PATCH: PatchArticleAction
+
+/user
+    POST: PostUserAction
 
 /user/{id:int}
     GET: GetUserAction

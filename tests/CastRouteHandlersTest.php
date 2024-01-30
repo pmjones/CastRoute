@@ -33,10 +33,23 @@ class CastRouteHandlersTest extends CastRouteTestCase
     {
         $castRoute = $this->newCastRoute();
         $routeHandlers = $castRoute->getRouteHandlers();
+
+        /** @php-styler-expansive */
         $expect = [
             '/archive/{username}[/{year:year}[/{month:month}[/{day:day}]]]' => [
                 'GET' => 'GetArchiveAction',
                 'HEAD' => 'GetArchiveAction',
+            ],
+            '/article' => [
+                'POST' => 'PostArticleAction',
+            ],
+            '/article/{id:int}' => [
+                'GET' => 'GetArticleAction',
+                'HEAD' => 'GetArticleAction',
+                'PATCH' => 'PatchArticleAction',
+            ],
+            '/user' => [
+                'POST' => 'PostUserAction',
             ],
             '/user/{id:int}' => [
                 'GET' => 'GetUserAction',

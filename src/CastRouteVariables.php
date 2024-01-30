@@ -18,7 +18,6 @@ class CastRouteVariables
         'bool' => '0|f|false|n|no|1|t|true|y|yes',
         'float' => '\d+\.?\d+',
         'int' => '\d+',
-        'mixed' => '[^/]+',
         'string' => '[^/]+',
     ];
 

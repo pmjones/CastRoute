@@ -34,8 +34,17 @@ abstract class CastRouteTestCase extends \PHPUnit\Framework\TestCase
             routeVariables: CustomRouteVariables::class,
             cacheFile: $cacheFile,
             routes: function ($r) {
+                // user
                 $r->addRoute('GET', '/user/{id:int}', 'GetUserAction');
                 $r->patch('/user/{id:int}', 'EditUserAction');
+                $r->post('/user', 'PostUserAction');
+
+                // article
+                $r->get('/article/{id:int}', 'GetArticleAction');
+                $r->post('/article', 'PostArticleAction');
+                $r->patch('/article/{id:int}', 'PatchArticleAction');
+
+                // archive
                 $r->map(
                     '/archive/{username}[/{year:year}[/{month:month}[/{day:day}]]]',
                     'GetArchiveAction',
